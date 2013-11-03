@@ -35,7 +35,7 @@ case $1 in
     buildProd
     ;;
 
-  'sandbox' )
+  'dev' )
     buildCommon
     NODE_ENV=dev APP_ROOT=${APP_ROOT} node config/build/mongoIndexes.js
     NODE_ENV=dev APP_ROOT=${APP_ROOT} USER=${USER} node app/server.js
