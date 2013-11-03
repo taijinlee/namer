@@ -2,7 +2,7 @@ var config = require('config');
 var fs = require('fs');
 
 var baseHandler = function(req, res) {
-  fs.readFile(__dirname + '/index.html', function(error, data) {
+  fs.readFile(process.env.APP_ROOT + '/index.html', function(error, data) {
     if (error) {
       res.writeHead(500);
       return res.end('Error loading index.html');
@@ -17,8 +17,7 @@ var baseHandler = function(req, res) {
 var app = require('http').createServer(baseHandler);
 var io = require('socket.io').listen(app);
 
-// var store = require(process.env.APP_ROOT + '/store/store.js')();
-
+var store = require(process.env.APP_ROOT + '/store/store.js')(datastore, config.store.mongo);
 
 require('routes')(io, store);
 
