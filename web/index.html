@@ -14,14 +14,13 @@
     <script>
       var socket = io.connect('http://localhost');
       socket.on('connected', function(data) {
-      
       });
       socket.on('news', function (data) {
         console.log(data);
         socket.emit('my other event', { my: 'data' });
       });
     </script>
-    <script data-main="/VERSION/js/main" src="/VERSION/bower_components/requirejs/require.js"></script>
+    <script data-main="/VERSION/main" src="/VERSION/bower_components/requirejs/require.js"></script>
   </body>
 
 </html>

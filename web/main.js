@@ -1,21 +1,15 @@
 var config = {
   paths: {
-    'backbone': 'bower_components/backbone/backbone-amd',
-    'bootstrap': 'bower_components/bootstrap/bootstrap',
-    'json2': 'bower_components/json2',
-    'jquery': 'bower_components/jquery/jquery-1.8.3',
-    'select2': 'bower_components/jquery/select2',
-    // 'socket.io': '/socket.io/socket.io',
-    'text': 'bower_components/require/text',
-    'underscore': 'bower_components/underscore/underscore',
+    'backbone': 'bower_components/backbone-amd/backbone',
+    // 'bootstrap': 'bower_components/bootstrap/bootstrap',
+    'json2': 'bower_components/json2/json2',
+    'jquery': 'bower_components/jquery/jquery',
+    'select2': 'bower_components/select2/select2',
+    'text': 'bower_components/requirejs-text/text',
+    'underscore': 'bower_components/underscore-amd/underscore',
   },
   shim: {
-    'autocomplete': ['jquery'],
-    'bootstrap': ['jquery'],
-    'bootstrap-editable': ['jquery', 'bootstrap'],
-    'bootstrap-timepicker': ['jquery', 'bootstrap'],
-    'datepicker': ['jquery'],
-    'json': ['text'],
+    'backbone': ['jquery', 'underscore'],
     'select2': ['jquery']
   }
 };
