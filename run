@@ -3,7 +3,7 @@
 APP_ROOT=`pwd`
 GIT_REV=`git rev-parse --verify HEAD`
 USER=`whoami`+dev
-NODE_VERSION=v0.10.1
+NODE_VERSION=v0.10.21
 PATH=${PATH}:${APP_ROOT}/vendor/nvm/${NODE_VERSION}/bin
 export PATH
 
@@ -35,36 +35,10 @@ case $1 in
     buildProd
     ;;
 
-  'dev' )
-    buildCommon
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} node config/build/mongoIndexes.js
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} ./node_modules/forever/bin/forever stop devserver.js
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} ./node_modules/forever/bin/forever start -l /service/log/forever.log -o /service/log/app.log -e /service/log/app-stderr.log -p /service/tmp --append devserver.js
-    ;;
-
   'sandbox' )
     buildCommon
     NODE_ENV=dev APP_ROOT=${APP_ROOT} node config/build/mongoIndexes.js
     NODE_ENV=dev APP_ROOT=${APP_ROOT} USER=${USER} node app/server.js
-    ;;
-
-  'timeline-sb' )
-    buildCommon
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} node config/build/mongoIndexes.js
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} USER=${USER} node timeline/server.js
-    ;;
-
-  'splash-sb' )
-    buildCommon
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} node config/build/mongoIndexes.js
-    NODE_ENV=dev APP_ROOT=${APP_ROOT} USER=${USER} node splash/server.js
-    ;;
-
-  'splash-prod' )
-    buildCommon
-    NODE_ENV=prod APP_ROOT=${APP_ROOT} node config/build/mongoIndexes.js
-    NODE_ENV=prod APP_ROOT=${APP_ROOT} GIT_REV=${GIT_REV} ./node_modules/forever/bin/forever stop splash/server.js
-    NODE_ENV=prod APP_ROOT=${APP_ROOT} GIT_REV=${GIT_REV} ./node_modules/forever/bin/forever start -l /service/log/forever.log -o /service/log/splash.log -e /service/log/splash-stderr.log -p /service/tmp --append splash/server.js
     ;;
 
   'prod' )
