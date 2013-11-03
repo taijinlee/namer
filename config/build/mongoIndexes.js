@@ -2,7 +2,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var async = require('async');
 var _ = require('underscore');
-var mongoConfig = require(process.env.APP_ROOT + '/config/config.js')().store.mongo;
+var mongoConfig = require('config').store.mongo;
 
 var indexes = [
   /*
