@@ -1,16 +1,16 @@
 var config = require('config');
 var fs = require('fs');
 
-var baseHandler = function(req, res) {
-  fs.readFile(process.env.APP_ROOT + '/web/index.html', function(error, data) {
-    if (error) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
+var nodeStatic = require('node-static');
+var file = new nodeStatic.Server(process.env.APP_ROOT + '/web');
 
-    res.writeHead(200);
-    res.end(data);
-  });
+var baseHandler = function(req, res) {
+  req.addListener('end', function() {
+    if (process.env.NODE_ENV === 'dev') {
+      req.url = req.url.replace(/^\/VERSION/, '');
+    }
+    file.serve(req, res);
+  }).resume();
 };
 
 var app = require('http').createServer(baseHandler);
