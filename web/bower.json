@@ -1,0 +1,25 @@
+{
+  "name": "namer",
+  "version": "0.0.0",
+  "homepage": "https://github.com/taijinlee/namer",
+  "authors": [
+    "Tai-Jin Lee <taijin@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone-amd": "~1.1.0",
+    "jquery": "~2.0.3",
+    "json2": "*",
+    "requirejs": "~2.1.9",
+    "select2": "~3.4.4",
+    "underscore": "~1.5.2"
+  }
+}
