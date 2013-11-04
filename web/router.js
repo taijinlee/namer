@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'views/home',
-  'views/project'
+  'views/project/project'
 ], function($, _, Backbone, HomeView, ProjectView) {
 
   return Backbone.Router.extend({
