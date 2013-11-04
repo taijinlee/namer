@@ -6,10 +6,14 @@ var mongoConfig = require('config').store.mongo;
 
 var indexes = [
   { database: 'namer', collection: 'users', index: { email: 1 }, options: { unique: true }},
-  { database: 'namer', collection: 'authType', index: { userId: 1, type: 1 } },
-  { database: 'namer', collection: 'projects', index: { userId: 1 } },
+  { database: 'namer', collection: 'auths', index: { userId: 1, type: 1 } },
+  { database: 'namer', collection: 'projects', index: { userId: 1, name: 1 } },
   { database: 'namer', collection: 'collaborators', index: { projectId: 1 } },
   { database: 'namer', collection: 'collaborators', index: { userId: 1 } },
+  { database: 'namer', collection: 'names', index: { projectId: 1 } },
+  { database: 'namer', collection: 'projectTlds', index: { projectId: 1 } },
+  { database: 'namer', collection: 'votes', index: { projectId: 1, nameId: 1 } },
+  { database: 'namer', collection: 'nameTlds', index: { projectId: 1, nameId: 1 } },
 ];
 
 mongo.MongoClient.connect('mongodb://' + mongoConfig.host, function(error, db) {

@@ -4,12 +4,19 @@ var fs = require('fs');
 var nodeStatic = require('node-static');
 var file = new nodeStatic.Server(process.env.APP_ROOT + '/web');
 
+var baseIndex = fs.readFileSync(process.env.APP_ROOT + '/web/index.html');
+
 var baseHandler = function(req, res) {
   req.addListener('end', function() {
     if (process.env.NODE_ENV === 'dev') {
       req.url = req.url.replace(/^\/VERSION/, '');
     }
-    file.serve(req, res);
+    file.serve(req, res, function(error, result) {
+      if (error) {
+        res.writeHead(200);
+        return res.end(baseIndex);
+      }
+    });
   }).resume();
 };
 

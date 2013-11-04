@@ -18,6 +18,7 @@ define([
 
     routes: {
       '': 'home',
+      'project': 'project'
       'project/:id': 'project',
       '*splat': 'goHome'
     },
