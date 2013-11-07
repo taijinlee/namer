@@ -5,6 +5,7 @@ module.exports = function(store) {
   return new Model(store, { database: 'namer', collection: 'projects' }, {
     id: { type: 'string' },
     name: { type: 'string' },
+    tlds: { type: 'array' },
     createdBy: { type: 'string' }
   });
 };

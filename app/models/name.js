@@ -6,6 +6,7 @@ module.exports = function(store) {
     id: { type: 'string' },
     proejctId: { type: 'string' },
     name: { type: 'string' },
+    availability: { type: 'object' },
     createdBy: { type: 'string' },
     isArchived: { type: 'bool' }
   });
