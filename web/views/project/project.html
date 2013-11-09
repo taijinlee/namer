@@ -1,10 +1,16 @@
+<h1 id="projectName"><%= project.get('name') %></h1>
+
 <table>
   <thead>
     <tr>
-      <th id="projectName">cool</th>
-      <th>.com</th>
-      <th>.org</th>
-      <th>.net</th>
+      <th>
+        <form id="addName">
+          <input id="newName" name="newName" type="text" /><button type="submit">Add Name</button>
+        </form>
+      </th>
+      <% _.each(project.get('tlds'), function(tld) { %>
+        <td>.<%= tld %></td>
+      <% }) %>
     </tr>
   </thead>
 

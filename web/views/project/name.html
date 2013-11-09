@@ -1,4 +1,10 @@
-<td><%= name.get('name') %></td>
-<td><%= availability.com ? 'Yes' : 'No' %></td>
-<td><%= availability.org ? 'Yes' : 'No' %></td>
-<td><%= availability.net ? 'Yes' : 'No' %></td>
+<td><%= name %></td>
+<% _.each(tlds, function(tld) { %>
+  <td>
+    <% if (availability[tld] === undefined || availability[tld] === null) { %>
+      Unknown
+    <% } else { %>
+      <%= availability[tld] ? 'Yes' : 'No' %>
+    <% } %>
+  </td>
+<% }) %>
