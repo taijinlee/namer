@@ -1,7 +1,7 @@
 
 var _ = require('underscore');
 
-module.exports = var Base = function(store, context, schema) {
+var Base = module.exports = function(store, context, schema) {
   if (!context.database || !context.collection) {
     throw new Error('model requires database and collection');
   }
@@ -13,7 +13,7 @@ module.exports = var Base = function(store, context, schema) {
 
 _.extend(Base.prototype, {
   insert: function(obj, callback) {
-    if (!this._verifySchema(obj)) { return callback(this._schemaInvalidError); }
+    if (!this._verifySchema(obj, false)) { return callback(this._schemaInvalidError); }
     return this.store.insert(this._sanitize(obj), this.context, callback);
   },
 
@@ -22,12 +22,12 @@ _.extend(Base.prototype, {
   },
 
   update: function(criteria, obj, callback) {
-    if (!this._verifySchema(obj)) { return callback(this._schemaInvalidError); }
+    if (!this._verifySchema(obj, true)) { return callback(this._schemaInvalidError); }
     return this.store.update(criteria, this._sanitize(obj), this.context, callback);
   },
 
   upsert: function(criteria, obj, callback) {
-    if (!this._verifySchema(obj)) { return callback(this._schemaInvalidError); }
+    if (!this._verifySchema(obj, true)) { return callback(this._schemaInvalidError); }
     return this.store.upsert(criteria, this._sanitize(obj), this.context, callback);
   },
 
@@ -39,10 +39,11 @@ _.extend(Base.prototype, {
     return this.store.query(criteria, this.context, { limit: limit, skip: skip }, callback);
   },
 
-  _verifySchema: function(obj) {
+  _verifySchema: function(obj, isExpectId) {
     // TODO: hack here. for getting it out, i only need to verify everything exists.
     // in future, use node-validator to actually make sure it's the correct type
     return _.every(this.schemaKeys, function(schemaKey) {
+      if (!isExpectId && schemaKey === 'id') { return true; }
       var value = obj[schemaKey];
       if (value === undefined || value === null) { return false; }
       return true;
@@ -50,7 +51,7 @@ _.extend(Base.prototype, {
   },
 
   _sanitize: function(obj) {
-o    return _.pick(obj, this.schemaKeys);
+    return _.pick(obj, this.schemaKeys);
   },
 
   _schemaInvalidError: new Error('schema invalid')
