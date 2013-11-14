@@ -2,6 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'bootstrap',
   'select2',
   'text',
 ], function() {

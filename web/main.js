@@ -1,7 +1,7 @@
 var config = {
   paths: {
     'backbone': 'bower_components/backbone-amd/backbone',
-    // 'bootstrap': 'bower_components/bootstrap/bootstrap',
+    'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap',
     'json2': 'bower_components/json2/json2',
     'jquery': 'bower_components/jquery/jquery',
     'select2': 'bower_components/select2/select2',
@@ -10,6 +10,7 @@ var config = {
   },
   shim: {
     'backbone': ['jquery', 'underscore'],
+    'bootstrap': ['jquery'],
     'select2': ['jquery']
   }
 };
