@@ -39,7 +39,7 @@ define([
     var data = model.toJSON();
     var success = options.success;
 
-    model.trigger('request', model, xhr, options);
+    // model.trigger('request', model, xhr, options);
     socket.emit(url + ':' + method, data, function(error, data) {
       if (error) {
         options.error();

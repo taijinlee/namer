@@ -1,5 +1,7 @@
 var config = require('config');
 var fs = require('fs');
+var cookie = require('cookie');
+var tokenzier = require(process.env.APP_ROOT + '/lib/tokenizer.js');
 
 var nodeStatic = require('node-static');
 var file = new nodeStatic.Server(process.env.APP_ROOT + '/web');
@@ -25,8 +27,18 @@ var io = require('socket.io').listen(app);
 
 io.configure(function() {
   io.set('authorization', function(handshakeData, done) {
-    console.log(handshakeData);
-    done(null, true);
+    handshakeData.userId = null;
+
+    var cookies = cookie.parse(handshakeData.headers.cookie);
+    if (!cookies._namer_token) { return done(null, false); }
+
+    var userId = loginToken.slice(0, loginToken.indexOf(':'));
+    var tokenParts = loginToken.split(':');
+    tokenParts.unshift(salt);
+    if (!tokenizer.match.apply(null, tokenParts)) { return done(null, false); }
+
+    handshakeData.userId = userId;
+    return done(null, true);
   });
 });
 
