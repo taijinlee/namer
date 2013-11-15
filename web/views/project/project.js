@@ -56,7 +56,8 @@ define([
         availability: availability,
         createdBy: 'me',
         isArchived: false
-      }).save();
+      });
+      newNameModel.save();
       this.names.add(newNameModel);
     }
   });
