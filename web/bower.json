@@ -18,6 +18,7 @@
     "backbone-amd": "~1.1.0",
     "bootstrap-less": "~2.3.2",
     "jquery": "~2.0.3",
+    "jquery-cookie": "~1.4.0",
     "json2": "*",
     "requirejs": "~2.1.9",
     "requirejs-text": "~2.0.10",

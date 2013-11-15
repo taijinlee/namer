@@ -1,14 +1,22 @@
 define([
-  'jquery',
-  'underscore',
   'backbone',
   'bootstrap',
+  'jquery',
+  'jquery-cookie',
   'select2',
+  'socketio',
   'text',
+  'underscore'
 ], function() {
   var $ = window.$.noConflict();
   var _ = window._.noConflict();
   var Backbone = window.Backbone.noConflict();
+
+  window.socket = io.connect();
+  window.socket.socket.on('error', function (reason) {
+    $.removeCookie('_namer_token');
+    console.error('Unable to connect Socket.IO', reason);
+  });
 
   Backbone.View = Backbone.View.extend({
     getQueryParams: function() {

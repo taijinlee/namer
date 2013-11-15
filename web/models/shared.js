@@ -1,15 +1,15 @@
 define([
+  './cookie',
   './users',
   './projects',
   './votes',
   './names'
-], function(UsersCollection, ProjectsCollection, VotesCollection, NamesCollection) {
-
+], function(CookieModel, UsersCollection, ProjectsCollection, VotesCollection, NamesCollection) {
   return {
+    cookie : new CookieModel(),
     users: new UsersCollection(),
     projects: new ProjectsCollection(),
     names: new NamesCollection(),
     votes: new VotesCollection()
   }
-
 });
