@@ -25,4 +25,23 @@ describe('Tokenizer:', function() {
     }, 15);
   });
 
+  it('should generate and match token on indefinite basis (string)', function(done) {
+    var now = new Date().getTime();
+    var token = tokenizer.generate(tokenize, salt, '' + now, '' + 0);
+    setTimeout(function() {
+      tokenizer.match(tokenize, salt, '' + now, '' + 0, token).should.equal(true);
+      done();
+    }, 25);
+  });
+
+  it('should generate and match token based on time (string)', function(done) {
+    var now = new Date().getTime();
+    var token = tokenizer.generate(tokenize, salt, now, 10);
+    tokenizer.match(tokenize, salt, '' + now, '10', token).should.equal(true);
+
+    setTimeout(function() {
+      tokenizer.match(tokenize, salt, '' + now, '10', token).should.equal(false);
+      done();
+    }, 15);
+  });
 });
