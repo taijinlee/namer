@@ -17,8 +17,8 @@ _.extend(Base.prototype, {
     return this.store.insert(this._sanitize(obj), this.context, callback);
   },
 
-  retrieve: function(key, callback) {
-    return this.store.retrieve(this._sanitize(key), this.context, {}, callback);
+  retrieve: function(criteria, callback) {
+    return this.store.retrieve(this._sanitize(criteria), this.context, {}, callback);
   },
 
   update: function(criteria, obj, callback) {
