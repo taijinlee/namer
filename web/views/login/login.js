@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'models/auth',
   'text!./form.html'
-], function($, _, Backbone, AuthModel, formTemplate) {
+], function($, _, Backbone, formTemplate) {
   return Backbone.View.extend({
     render: function() {
       this.$el.html(_.template(formTemplate));

@@ -1,14 +1,18 @@
 var config = require('config');
 var fs = require('fs');
 var cookie = require('cookie');
-var tokenzier = require(process.env.APP_ROOT + '/lib/tokenizer.js');
+var tokenizer = require(process.env.APP_ROOT + '/lib/tokenizer.js');
 
 var nodeStatic = require('node-static');
 var file = new nodeStatic.Server(process.env.APP_ROOT + '/web');
 
 var baseIndex = fs.readFileSync(process.env.APP_ROOT + '/web/index.html');
 
+var store = require(process.env.APP_ROOT + '/store/store.js')('mongo', config.store.mongo);
+
 var baseHandler = function(req, res) {
+  if (require(process.env.APP_ROOT + '/app/ajaxRoutes.js')(store, req, res)) { return; }
+
   req.addListener('end', function() {
     if (process.env.NODE_ENV === 'dev') {
       req.url = req.url.replace(/^\/VERSION/, '');
@@ -30,11 +34,12 @@ io.configure(function() {
     handshakeData.userId = null;
 
     var cookies = cookie.parse(handshakeData.headers.cookie);
-    if (!cookies._namer_token) { return done(null, false); }
+    var loginToken = cookies._namer_token;
+    if (!loginToken) { return done(null, false); }
 
     var userId = loginToken.slice(0, loginToken.indexOf(':'));
     var tokenParts = loginToken.split(':');
-    tokenParts.unshift(salt);
+    tokenParts.unshift(config.auth.salt);
     if (!tokenizer.match.apply(null, tokenParts)) { return done(null, false); }
 
     handshakeData.userId = userId;
@@ -59,9 +64,6 @@ io.configure('prod', function() {
     'jsonp-polling'
   ]);
 });
-
-
-var store = require(process.env.APP_ROOT + '/store/store.js')('mongo', config.store.mongo);
 
 // load routes
 require(process.env.APP_ROOT + '/app/routes.js')(io, store);
