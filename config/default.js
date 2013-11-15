@@ -5,7 +5,8 @@ module.exports = {
   },
 
   auth: {
-    salt: ""
+    ttl: 86400000 * 365, // 1 year
+    salt: 'cool'
   },
 
   store: {

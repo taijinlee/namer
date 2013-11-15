@@ -3,7 +3,7 @@ var querystring = require('querystring');
 var tokenizer = require(process.env.APP_ROOT + '/lib/tokenizer.js');
 var cookie = require('cookie');
 
-var authSalt = require('config').auth.salt;
+var authConfig = require('config').auth;
 
 var getBody = function(req, callback) {
   var fullBody = '';
@@ -38,10 +38,9 @@ module.exports = function(store, req, res) {
         var userId = results.authData.userId;
         // give the user a good login cookie
         var time = (new Date()).getTime();
-        var ttl = 300000;  /* 5 mins */
-        var token = tokenizer.generate(authSalt, userId, time, ttl);
-        var cookie = [userId, time, ttl, token].join(':');
-        return done(null, { cookie: cookie, expires: time + ttl });
+        var token = tokenizer.generate(authConfig.salt, userId, time, authConfig.ttl);
+        var cookie = [userId, time, authConfig.ttl, token].join(':');
+        return done(null, { cookie: cookie, expires: new Date(time + 86400000 * 365) });
       }]
     }, function(error, results) {
       if (error) {

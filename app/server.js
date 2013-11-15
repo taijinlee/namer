@@ -1,13 +1,11 @@
 var config = require('config');
 var fs = require('fs');
 var cookie = require('cookie');
+var NodeStatic = require('node-static');
 var tokenizer = require(process.env.APP_ROOT + '/lib/tokenizer.js');
 
-var nodeStatic = require('node-static');
-var file = new nodeStatic.Server(process.env.APP_ROOT + '/web');
-
+var file = new NodeStatic.Server(process.env.APP_ROOT + '/web');
 var baseIndex = fs.readFileSync(process.env.APP_ROOT + '/web/index.html');
-
 var store = require(process.env.APP_ROOT + '/store/store.js')('mongo', config.store.mongo);
 
 var baseHandler = function(req, res) {
