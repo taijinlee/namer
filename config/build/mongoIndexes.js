@@ -7,6 +7,7 @@ var mongoConfig = require('config').store.mongo;
 var indexes = [
   { database: 'namer', collection: 'users', index: { email: 1 }, options: { unique: true }},
   { database: 'namer', collection: 'auths', index: { userId: 1, type: 1 } },
+  { database: 'namer', collection: 'auths', index: { identifier: 1, type: 1 } },
   { database: 'namer', collection: 'projects', index: { userId: 1, name: 1 } },
   { database: 'namer', collection: 'collaborators', index: { projectId: 1 } },
   { database: 'namer', collection: 'collaborators', index: { userId: 1 } },
