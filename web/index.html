@@ -13,7 +13,7 @@
     <section id="container"></section>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>var socket = io.connect('http://localhost');</script>
+    <script>window.socket = io.connect();</script>
     <script data-main="/VERSION/main" src="/VERSION/bower_components/requirejs/require.js"></script>
   </body>
 
