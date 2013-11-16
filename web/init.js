@@ -15,7 +15,9 @@ define([
   });
 
   socket.on('connect', function() {
-    var cookie = router.getCookie();
+    var cookie = document.cookie ? $.cookie() : {};
+    sharedData.cookie.set(cookie);
+
     var userId = cookie._namer_token.split(':')[0];
     sharedData.user.set({ id: userId });
     sharedData.user.fetch();
