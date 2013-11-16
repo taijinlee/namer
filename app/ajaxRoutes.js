@@ -20,16 +20,18 @@ module.exports = function(store, req, res) {
 
   var authModel = require(process.env.APP_ROOT + '/app/models/auth.js')(store);
   var userModel = require(process.env.APP_ROOT + '/app/models/user.js')(store);
+  var projectModel = require(process.env.APP_ROOT + '/app/models/project.js')(store);
+  var collaboratorModel = require(process.env.APP_ROOT + '/app/models/collaborator.js')(store);
 
   if (req.url === '/api/auth/login' && req.method === 'POST') {
     async.auto({
-      getBody: async.apply(getBody, req),
-      authData: ['getBody', function(done, results) {
-        authModel.retrieve({ type: 'base', identifier: results.getBody.identifier }, done);
+      body: async.apply(getBody, req),
+      authData: ['body', function(done, results) {
+        authModel.retrieve({ type: 'base', identifier: results.body.identifier }, done);
       }],
       checkAuth: ['authData', function(done, results) {
         var authData = results.authData;
-        if (!authData || !tokenizer.match(authData.salt, results.getBody.secret, 0, 0, authData.secret)) {
+        if (!authData || !tokenizer.match(authData.salt, results.body.secret, 0, 0, authData.secret)) {
           return done(new Error('unauthorized: incorrect password'));
         }
         done(null);
@@ -60,27 +62,27 @@ module.exports = function(store, req, res) {
 
   if (req.url === '/api/auth' && req.method === 'POST') {
     async.auto({
-      getBody: async.apply(getBody, req),
-      validate: ['getBody', function(done, results) {
-        if (results.getBody.type !== 'base') { return done(new Error('invalid auth type')); }
+      body: async.apply(getBody, req),
+      validate: ['body', function(done, results) {
+        if (results.body.type !== 'base') { return done(new Error('invalid auth type')); }
         done(null);
       }],
       userId: ['validate', async.apply(function(done) { done(null, store.generateId()); })],
       createUser: ['userId', function(done, results) {
         userModel.insert({
           id: results.userId,
-          email: body.identifier
+          email: results.body.identifier
         }, done);
       }],
       createAuth: ['userId', function(done, results) {
         var authData = {
-          id: results.userId + '|' + body.type,
+          id: results.userId + '|' + results.body.type,
           userId: results.userId,
-          type: body.type,
-          identifier: body.identifier,
+          type: results.body.type,
+          identifier: results.body.identifier,
           salt: tokenizer.generateSalt()
         };
-        authData.secret = tokenizer.generate(authData.salt, body.secret, 0, 0);
+        authData.secret = tokenizer.generate(authData.salt, results.body.secret, 0, 0);
 
         authModel.insert(authData, done);
       }],
@@ -90,6 +92,14 @@ module.exports = function(store, req, res) {
           name: 'untitled',
           tlds: ['com', 'org', 'net'],
           createdBy: results.userId
+        }, done);
+      }],
+      createCollaborator: ['createProject', function(done, results) {
+        collaboratorModel.insert({
+          id: store.generateId(),
+          userId: results.userId,
+          projectId: results.createProject.id,
+          isAdmin: true
         }, done);
       }]
     }, function(error, results) {
