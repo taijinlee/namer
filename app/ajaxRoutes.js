@@ -101,14 +101,27 @@ module.exports = function(store, req, res) {
           projectId: results.createProject.id,
           isAdmin: true
         }, done);
+      }],
+      cookie: ['createAuth', function(done, results) {
+        var userId = results.createAuth.userId;
+        // give the user a good login cookie
+        var time = (new Date()).getTime();
+        var token = tokenizer.generate(authConfig.salt, userId, time, authConfig.ttl);
+        var cookie = [userId, time, authConfig.ttl, token].join(':');
+        return done(null, { cookie: cookie, expires: new Date(time + 86400000 * 365) });
       }]
     }, function(error, results) {
       if (error) {
         res.writeHead(400);
         return res.end();
       }
-      res.writeHead(200);
-      res.end();
+      var cookieToken = cookie.serialize('_namer_token', results.cookie.cookie, {
+        expires: new Date(results.cookie.expires),
+        path: '/'
+      });
+      res.setHeader('Set-Cookie', cookieToken);
+      res.statusCode = 200;
+      res.end('ok');
     });
     return true;
   }
