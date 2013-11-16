@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'lib/vent',
+  'vent',
   'router',
   'models/shared'
 ], function($, _, Backbone, vent, Router, sharedData) {

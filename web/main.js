@@ -12,6 +12,7 @@ var config = {
 
     'text': 'bower_components/requirejs-text/text',
     'underscore': 'bower_components/underscore-amd/underscore',
+    'vent': 'lib/vent'
   },
   shim: {
     'backbone': ['jquery', 'underscore'],

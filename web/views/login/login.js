@@ -2,7 +2,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'lib/vent',
+  'vent',
   'models/shared',
   'text!./form.html'
 ], function($, _, Backbone, vent, sharedData, formTemplate) {
@@ -18,6 +18,7 @@ define([
 
     login: function(event) {
       event.preventDefault();
+
       var values = { type: 'base' };
       _.each($(event.currentTarget).serializeArray(), function(field) {
         values[field.name] = field.value;

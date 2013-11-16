@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'vent',
+  'models/shared',
   'text!./form.html'
-], function($, _, Backbone, formTemplate) {
-
+], function($, _, Backbone, vent, sharedData, formTemplate) {
   return Backbone.View.extend({
     render: function() {
       this.$el.html(_.template(formTemplate));
@@ -16,24 +17,23 @@ define([
     },
 
     signup: function(event) {
-      event.preventDefault(); event.stopPropagation();
-      var values = {};
+      event.preventDefault();
 
+      var values = {};
       _.each(this.$('form').serializeArray(), function(field) {
         values[field.name] = field.value;
       });
 
       $.post('/api/auth', values, function() {
-
+        // TODO(taijinlee): super hack. not sure why i need this.
+        sharedData.socket.socket.connect();
+        vent.on('after:connect', function() {
+          Backbone.history.navigate('/project', { trigger: true });
+        });
       }).fail(function() {
-
+        console.log('failed?');
       });
       return false;
     }
-
-
   });
-
-  return SignupView;
-
 });
