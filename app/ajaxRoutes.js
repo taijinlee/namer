@@ -66,16 +66,16 @@ module.exports = function(store, req, res) {
         done(null);
       }],
       userId: ['validate', async.apply(function(done) { done(null, store.generateId()); })],
-      createUser: ['userId', function(done) {
+      createUser: ['userId', function(done, results) {
         userModel.insert({
-          id: userId,
+          id: results.userId,
           email: body.identifier
         }, done);
       }],
-      createAuth: ['userId', function(done) {
+      createAuth: ['userId', function(done, results) {
         var authData = {
-          id: userId + '|' + body.type,
-          userId: userId,
+          id: results.userId + '|' + body.type,
+          userId: results.userId,
           type: body.type,
           identifier: body.identifier,
           salt: tokenizer.generateSalt()
@@ -83,6 +83,14 @@ module.exports = function(store, req, res) {
         authData.secret = tokenizer.generate(authData.salt, body.secret, 0, 0);
 
         authModel.insert(authData, done);
+      }],
+      createProject: ['userId', function(done, results) {
+        projectModel.insert({
+          id: store.generateId(),
+          name: 'untitled',
+          tlds: ['com', 'org', 'net'],
+          createdBy: results.userId
+        }, done);
       }]
     }, function(error, results) {
       if (error) {

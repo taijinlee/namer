@@ -2,16 +2,15 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'lib/vent',
   'router',
   'models/shared'
-], function($, _, Backbone, Router, sharedData) {
-  var router = new Router();
-
+], function($, _, Backbone, vent, Router, sharedData) {
   var socket = sharedData.socket = io.connect();
   socket.socket.on('error', function(reason) {
-    socket.disconnect();
     $.removeCookie('_namer_token');
     console.error('Unable to connect Socket.IO', reason);
+    socket.disconnect();
   });
 
   socket.on('connect', function() {
@@ -21,6 +20,7 @@ define([
     var userId = cookie._namer_token.split(':')[0];
     sharedData.user.set({ id: userId });
     sharedData.user.fetch();
+    vent.trigger('after:connect');
   });
 
   // set a globally delegated event for a tags.
@@ -109,4 +109,8 @@ define([
     console.log(method, model, options);
 */
   };
+
+  var router = new Router();
+  Backbone.history.start({ pushState: true });
+
 });

@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'lib/vent',
   'models/shared',
   'text!./form.html'
-], function($, _, Backbone, sharedData, formTemplate) {
+], function($, _, Backbone, vent, sharedData, formTemplate) {
   return Backbone.View.extend({
     render: function() {
       this.$el.html(_.template(formTemplate));
@@ -25,7 +26,9 @@ define([
       $.post('/api/auth/login', values, function() {
         // TODO(taijinlee): super hack. not sure why i need this.
         sharedData.socket.socket.connect();
-        Backbone.history.navigate('/project', { trigger: true });
+        vent.on('after:connect', function() {
+          Backbone.history.navigate('/project', { trigger: true });
+        });
       }).fail(function() {
         console.log('failed??');
       });

@@ -8,7 +8,7 @@ define([
   'views/signup/signup',
   'views/login/login',
   'views/project/project'
-], function($, _, Backbone, sharedModels, LayoutView, HomeView, SignupView, LoginView, ProjectView) {
+], function($, _, Backbone, sharedData, LayoutView, HomeView, SignupView, LoginView, ProjectView) {
 
   return Backbone.Router.extend({
     initialize: function() {
@@ -21,8 +21,6 @@ define([
       this.signup = new SignupView();
       this.login = new LoginView();
       this.project = new ProjectView();
-
-      Backbone.history.start({ pushState: true });
     },
 
     routes: {
@@ -47,11 +45,16 @@ define([
     },
 
     project: function(id) {
+      if (!this.isLoggedIn()) { return Backbone.history.navigate(''); }
       this.project.setElement(this.$base).render(id);
     },
 
     goHome: function() {
       return Backbone.history.navigate('', { trigger: true });
+    },
+
+    isLoggedIn: function() {
+      return sharedData.cookie.get('_namer_token') ? true : false;
     }
   });
 });
