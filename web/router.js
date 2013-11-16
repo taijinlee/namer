@@ -60,8 +60,9 @@ define([
     },
 
     getCookie: function() {
-      var cookieJSON = document.cookie ? $.cookie() : {};
-      sharedModels.cookie.set(cookieJSON);
+      var cookieJson = document.cookie ? $.cookie() : {};
+      sharedModels.cookie.set(cookieJson);
+      return cookieJson;
     }
   });
 });

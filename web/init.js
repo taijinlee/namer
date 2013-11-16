@@ -1,9 +1,10 @@
 define([
   'jquery',
+  'underscore',
   'backbone',
   'router',
   'models/shared'
-], function($, Backbone, Router, sharedData) {
+], function($, _, Backbone, Router, sharedData) {
   var router = new Router();
 
   var socket = sharedData.socket = io.connect();
@@ -14,9 +15,11 @@ define([
   });
 
   socket.on('connect', function() {
-    router.getCookie();
+    var cookie = router.getCookie();
+    var userId = cookie._namer_token.split(':')[0];
+    sharedData.user.set({ id: userId });
+    sharedData.user.fetch();
   });
-
 
   // set a globally delegated event for a tags.
   // when clicked, we'll use backbone navigate unless ctrl, meta key were held, or if it was not left click
@@ -66,11 +69,9 @@ define([
 
     // model.trigger('request', model, xhr, options);
     socket.emit(url + ':' + method, data, function(error, data) {
-      if (error) {
-        options.error();
-      } else {
-        succes();
-      }
+      // TODO(taijinlee): figure out what cases these are and how to catch them properly
+      if (error) { return options.error(error); }
+      return success(data);
     });
 /*
     // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
@@ -103,7 +104,6 @@ define([
     var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
     return xhr;
 
-    console.log('yooo');
     console.log(method, model, options);
 */
   };

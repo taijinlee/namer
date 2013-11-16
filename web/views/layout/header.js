@@ -6,11 +6,11 @@ define([
 ], function(_, Backbone, sharedModels, headerTemplate) {
   return Backbone.View.extend({
     initialize: function() {
-      this.listenTo(sharedModels.cookie, 'change', this.render);
+      this.listenTo(sharedModels.user, 'change', this.render);
     },
 
     render: function() {
-      this.$el.html(_.template(headerTemplate, { isLoggedIn: sharedModels.cookie.get('_namer_token') }));
+      this.$el.html(_.template(headerTemplate, { isLoggedIn: sharedModels.user.get('email') }));
       return this;
     }
   });
