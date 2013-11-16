@@ -45,7 +45,7 @@ define([
     },
 
     project: function(id) {
-      if (!this.isLoggedIn()) { return Backbone.history.navigate(''); }
+      if (!this.isLoggedIn()) { return Backbone.history.navigate('', { trigger: true }); }
       this.project.setElement(this.$base).render(id);
     },
 
