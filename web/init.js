@@ -6,6 +6,12 @@ define([
   'router',
   'models/shared'
 ], function($, _, Backbone, vent, Router, sharedData) {
+  var cookie = document.cookie ? $.cookie() : {};
+  sharedData.cookie.set(cookie);
+
+  var router = new Router();
+  Backbone.history.start({ pushState: true });
+
   var socket = sharedData.socket = io.connect();
   socket.socket.on('error', function(reason) {
     $.removeCookie('_namer_token');
@@ -109,8 +115,5 @@ define([
     console.log(method, model, options);
 */
   };
-
-  var router = new Router();
-  Backbone.history.start({ pushState: true });
 
 });
