@@ -25,7 +25,7 @@ module.exports = function(storeConfig) {
     if (!_obj || !_obj.hasOwnProperty('id')) { return _obj; }
 
     var obj = _.clone(_obj);
-    obj._id = String(obj.id);
+    obj._id = obj.id;
     delete obj.id;
     return obj;
   };

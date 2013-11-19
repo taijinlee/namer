@@ -15,6 +15,18 @@ define([
     },
 
     render: function(projectId) {
+      if (this.projects.hasFetched) {
+        this.renderProject(projectId);
+      } else {
+        var self = this;
+        this.projects.fetch({
+          success: function() { self.renderProject(projectId); }
+        });
+      }
+      return this;
+    },
+
+    renderProject: function(projectId) {
       // this.projects.get(projectId);
       var project = this.project = new ProjectModel({
         id: 'projectId',
