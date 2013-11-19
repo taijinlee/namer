@@ -9,9 +9,6 @@ define([
   var cookie = document.cookie ? $.cookie() : {};
   sharedData.cookie.set(cookie);
 
-  var router = new Router();
-  Backbone.history.start({ pushState: true });
-
   var socket = sharedData.socket = io.connect();
   socket.socket.on('error', function(reason) {
     $.removeCookie('_namer_token');
@@ -26,38 +23,8 @@ define([
     var userId = cookie._namer_token.split(':')[0];
     sharedData.user.set({ id: userId });
     sharedData.user.fetch();
+
     vent.trigger('after:connect');
-  });
-
-  // set a globally delegated event for a tags.
-  // when clicked, we'll use backbone navigate unless ctrl, meta key were held, or if it was not left click
-  $('body').on('click', 'a', function(event) {
-    if (event.which === 1 && !event.ctrlKey && !event.metaKey) {
-      var location = $(event.currentTarget).attr('href');
-      // slight hack. Ignore if href is a javascript action, which will allow it to execute
-      if (location.indexOf('#') === 0) { return; }
-      if (location.indexOf('javascript') === 0) { return; }
-      if (location.indexOf('http') !== -1) { return; }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      Backbone.history.navigate(location, { trigger: true });
-    }
-  });
-
-  Backbone.View = Backbone.View.extend({
-    getQueryParams: function() {
-      var pairs = window.location.search.substring(1).split('&');
-      var obj = {};
-      for (var i in pairs) {
-        if (pairs[i] === '') { continue; }
-
-        var pair = pairs[i].split('=');
-        obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
-      }
-      return obj;
-    }
   });
 
   Backbone.sync = function(method, model, options) {
@@ -73,13 +40,13 @@ define([
     */
 
     var data = model.toJSON();
-    var success = options.success;
 
-    // model.trigger('request', model, xhr, options);
+    model.trigger('request', model, options);
+
     socket.emit(url + ':' + method, data, function(error, data) {
       // TODO(taijinlee): figure out what cases these are and how to catch them properly
       if (error) { return options.error(error); }
-      return success(data);
+      return options.success.call(model, data);
     });
 /*
     // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
@@ -115,5 +82,8 @@ define([
     console.log(method, model, options);
 */
   };
+
+  var router = new Router();
+  Backbone.history.start({ pushState: true });
 
 });
