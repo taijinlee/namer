@@ -7,7 +7,6 @@
   "browser"       : false,   // Standard browser globals e.g. `window`, `document`.
 
   "node"          : true,
-  "es5"           : true,
   "rhino"         : false,
   "couch"         : false,
   "wsh"           : false,   // Windows Scripting Host.
@@ -33,7 +32,6 @@
 
 
   // ECMAScript 5.
-  "es5"           : true,   // Allow ECMAScript 5 syntax.
   "strict"        : false,  // Require `use strict` pragma  in every file.
   "globalstrict"  : false,  // Allow global "use strict" (also enables 'strict').
 
