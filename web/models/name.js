@@ -1,7 +1,7 @@
 define([
-  'backbone'
-], function(Backbone) {
-  return Backbone.Model.extend({
+  './baseModel'
+], function(BaseModel) {
+  return BaseModel.extend({
     url: 'name'
   });
 });

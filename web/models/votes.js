@@ -1,8 +1,8 @@
 define([
-  'backbone',
+  './baseCollection',
   './vote'
-], function(Backbone, VoteModel) {
-  return Backbone.Collection.extend({
+], function(BaseCollection, VoteModel) {
+  return BaseCollection.extend({
     url: 'votes',
     model: VoteModel
   });

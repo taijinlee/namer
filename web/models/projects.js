@@ -1,9 +1,9 @@
 define([
-  'backbone',
-  './user'
-], function(Backbone, UserModel) {
-  return Backbone.Collection.extend({
+  './baseCollection',
+  './project'
+], function(BaseCollection, ProjectModel) {
+  return BaseCollection.extend({
     url: 'projects',
-    model: UserModel
+    model: ProjectModel
   });
 });

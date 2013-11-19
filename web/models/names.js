@@ -1,8 +1,8 @@
 define([
-  'backbone',
+  './baseCollection',
   './name'
-], function(Backbone, NameModel) {
-  return Backbone.Collection.extend({
+], function(BaseCollection, NameModel) {
+  return BaseCollection.extend({
     url: 'names',
     model: NameModel
   });

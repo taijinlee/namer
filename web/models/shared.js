@@ -14,5 +14,5 @@ define([
     projects: new ProjectsCollection(),
     names: new NamesCollection(),
     votes: new VotesCollection()
-  }
+  };
 });
