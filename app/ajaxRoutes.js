@@ -89,7 +89,7 @@ module.exports = function(store, req, res) {
       createProject: ['userId', function(done, results) {
         projectModel.insert({
           id: store.generateId(),
-          name: 'untitled',
+          name: 'Your Project Codename',
           tlds: ['com', 'org', 'net'],
           createdBy: results.userId
         }, done);
