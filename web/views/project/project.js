@@ -15,14 +15,10 @@ define([
     },
 
     render: function(projectId) {
-      if (this.projects.hasFetched) {
-        this.renderProject(projectId);
-      } else {
-        var self = this;
-        this.projects.fetch({
-          success: function() { self.renderProject(projectId); }
-        });
-      }
+      var self = this;
+      this.projects.fetch({
+        success: function() { self.renderProject(projectId); }
+      });
       return this;
     },
 
