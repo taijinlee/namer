@@ -27,12 +27,19 @@ define([
     },
 
     renderProject: function(projectId) {
-      // this.projects.get(projectId);
-      var project = this.project = new ProjectModel({
-        id: 'projectId',
-        name: 'my cool project',
-        tlds: ['com', 'org', 'net', 'io'],
-      });
+      if (projectId) {
+        this.project = this.projects.get(projectId);
+      } else {
+        if (this.projects.size() === 1) {
+          this.project = this.projects.first();
+        } else {
+          this.project = this.projects.select(function(project) {
+            project.createdBy === sharedData.cookie.get('userId');
+          });
+          this.project = this.project[0];
+          // could still be no project?
+        }
+      }
 
       var name = new NameModel({ id: 'myId', name: 'awesome sauce name', availability: {com: true, org: false, net: true} });
       this.names.add(name);
@@ -40,7 +47,7 @@ define([
       this.$el.html(_.template(projectTemplate, { project: this.project }));
 
       var $tbody = this.$('tbody');
-      var projectTlds = project.get('tlds');
+      var projectTlds = this.project.get('tlds');
 
       this.names.each(function(name) {
         $tbody.append(new NameRowView().render(name, projectTlds).$el);

@@ -54,7 +54,7 @@ define([
     },
 
     isLoggedIn: function() {
-      return sharedData.cookie.get('_namer_token') ? true : false;
+      return sharedData.cookie.get('userId') ? true : false;
     }
   });
 });

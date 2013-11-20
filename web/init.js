@@ -7,7 +7,11 @@ define([
   'models/shared'
 ], function($, _, Backbone, vent, Router, sharedData) {
   var cookie = document.cookie ? $.cookie() : {};
-  sharedData.cookie.set(cookie);
+  var userId = null;
+  if (cookie._namer_token) {
+    userId = cookie._namer_token.split(':')[0];
+  }
+  sharedData.cookie.set({ cookie: cookie, userId: userId });
 
   var socket = sharedData.socket = io.connect();
   socket.socket.on('error', function(reason) {
@@ -17,12 +21,12 @@ define([
   });
 
   socket.on('connect', function() {
+    // guaranteed that we have a valid cookie here otherwise socket wouldn't connect
     var cookie = document.cookie ? $.cookie() : {};
-    sharedData.cookie.set(cookie);
-
     var userId = cookie._namer_token.split(':')[0];
-    sharedData.user.set({ id: userId });
-    sharedData.user.fetch();
+
+    // setting userId in cookie obj for convenience
+    sharedData.cookie.set({ cookie: cookie, userId: userId });
 
     vent.trigger('after:connect');
   });
@@ -43,6 +47,8 @@ define([
 
     model.trigger('request', model, options);
 
+    // TODO:(taijinlee): is there a race condition here with socket connect?
+    // Just have to be careful not to use backbone sync before connected
     socket.emit(url + ':' + method, data, function(error, data) {
       // TODO(taijinlee): figure out what cases these are and how to catch them properly
       if (error) { return options.error(error); }
