@@ -9,7 +9,6 @@ define([
   'views/login/login',
   'views/project/project'
 ], function($, _, Backbone, sharedData, LayoutView, HomeView, SignupView, LoginView, ProjectView) {
-
   return Backbone.Router.extend({
     initialize: function() {
       this.layout = new LayoutView();
