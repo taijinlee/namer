@@ -6,8 +6,8 @@ module.exports = function(socket, store) {
   var collaboratorModel = require(process.env.APP_ROOT + '/app/models/collaborator.js')(store);
 
   socket.on('projects:read', function(criteria, callback) {
+    // TODO(taijinlee): incorporate critera?
     var userId = socket.handshake.userId;
-    criteria.userId = socket.handshake.userId;
     async.auto({
       collaborators: function(done) {
         return collaboratorModel.query({ userId: userId }, -1, 0, done);

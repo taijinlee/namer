@@ -1,5 +1,6 @@
 var config = {
   paths: {
+    'async': 'bower_components/async/lib/async',
     'backbone': 'bower_components/backbone-amd/backbone',
     'bootstrap': 'bower_components/bootstrap/dist/js/bootstrap',
     'json2': 'bower_components/json2/json2',

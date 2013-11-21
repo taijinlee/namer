@@ -1,4 +1,5 @@
 define([
+  'async',
   'backbone',
   'bootstrap',
   'jquery',

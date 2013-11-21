@@ -1,4 +1,5 @@
 define([
+  'async',
   'underscore',
   'backbone',
   './nameRow',
@@ -6,7 +7,7 @@ define([
   'models/project',
   'models/name',
   'text!./project.html'
-], function(_, Backbone, NameRowView, sharedData, ProjectModel, NameModel, projectTemplate) {
+], function(async, _, Backbone, NameRowView, sharedData, ProjectModel, NameModel, projectTemplate) {
   return Backbone.View.extend({
     initialize: function() {
       this.projects = sharedData.projects;
@@ -15,31 +16,53 @@ define([
     },
 
     render: function(projectId) {
+      // render loading screen
+
       var self = this;
-      this.projects.fetch({
-        success: function() { self.renderProject(projectId); }
+      async.auto({
+        getProjects: function(done) {
+          self.projects.fetch({
+            success: function(collection) {
+              done(null, collection);
+            },
+            error: function() {
+              done(new Error('bleh'));
+            }
+          });
+        },
+        project: ['getProjects', function(done, results) {
+          if (projectId) {
+            self.project = self.projects.get(projectId);
+          } else if (self.projects.size() === 1) {
+            self.project = self.projects.first();
+          } else {
+            self.project = self.projects.select(function(project) {
+              project.createdBy === sharedData.cookie.get('userId');
+            });
+            self.project = self.project[0];
+          }
+          if (!self.project) { done(new Error('no project id')); }
+          done(null, self.project);
+        }],
+        names: ['project', function(done, results) {
+          self.names.fetch({
+            data: { projectId: results.project.get('id') },
+            success: function(collection) {
+              done(null, collection);
+            },
+            error: function() {
+              done(new Error('names error'));
+            }
+          });
+        }]
+      }, function(error, results) {
+        if (error) { return Backbone.history.navigate('', { trigger: true }); }
+        self.renderProject(projectId);
       });
       return this;
     },
 
     renderProject: function(projectId) {
-      if (projectId) {
-        this.project = this.projects.get(projectId);
-      } else {
-        if (this.projects.size() === 1) {
-          this.project = this.projects.first();
-        } else {
-          this.project = this.projects.select(function(project) {
-            project.createdBy === sharedData.cookie.get('userId');
-          });
-          this.project = this.project[0];
-          // could still be no project?
-        }
-      }
-
-      var name = new NameModel({ id: 'myId', name: 'awesome sauce name', availability: {com: true, org: false, net: true} });
-      this.names.add(name);
-
       this.$el.html(_.template(projectTemplate, { project: this.project }));
 
       var $tbody = this.$('tbody');

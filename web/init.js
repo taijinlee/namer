@@ -43,7 +43,16 @@ define([
       'read':   'GET'
     */
 
-    var data = model.toJSON();
+    var data = options.data || model.toJSON();
+    // TODO(taijinlee): check that this makes sense in this context
+    /*
+    if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
+      // params.contentType = 'application/json';
+      data = options.attrs || model.toJSON(options);
+    }
+    console.log(data);
+    */
+
 
     model.trigger('request', model, options);
 
