@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
+    "async": "~0.2.5",
     "backbone-amd": "~1.1.0",
     "bootstrap-less": "~2.3.2",
     "jquery": "~2.0.3",
