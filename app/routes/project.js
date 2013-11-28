@@ -10,11 +10,11 @@ module.exports = function(socket, store) {
     var userId = socket.handshake.userId;
     async.auto({
       collaborators: function(done) {
-        return collaboratorModel.query({ userId: userId }, -1, 0, done);
+        return collaboratorModel.query({ userId: userId }, {}, done);
       },
       projects: ['collaborators', function(done, results) {
         var projectIds = _.pluck(results.collaborators, 'projectId');
-        projectModel.query({ id: { $in: projectIds }}, -1, 0, done);
+        projectModel.query({ id: { $in: projectIds }}, {}, done);
       }]
     }, function(error, results) {
       if (error) { return callback(error); }

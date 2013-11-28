@@ -35,8 +35,11 @@ _.extend(Base.prototype, {
     return this.store.destroy(criteria, this.context, callback);
   },
 
-  query: function(criteria, limit, skip, callback) {
-    return this.store.query(criteria, this.context, { limit: limit, skip: skip }, callback);
+  query: function(criteria, options, callback) {
+    var _options = {};
+    if (limit) { _options.limit = limit; }
+    if (skip) { _options.skip = skip; }
+    return this.store.query(criteria, this.context, _options, callback);
   },
 
   _verifySchema: function(obj, isExpectId) {

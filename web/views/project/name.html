@@ -1,10 +1,16 @@
 <td><%= name %></td>
 <% _.each(tlds, function(tld) { %>
-  <td>
-    <% if (availability[tld] === undefined || availability[tld] === null) { %>
+  <% if (availability[tld] === undefined || availability[tld] === null) { %>
+    <td class="info nameTable-name">
       Unknown
-    <% } else { %>
-      <%= availability[tld] ? 'Yes' : 'No' %>
-    <% } %>
-  </td>
+    </td>
+  <% } else if (availability[tld]) { %>
+    <td class="success nameTable-name">
+      <span class="success glyphicon glyphicon-ok"></span>
+    </td>
+  <% } else { %>
+    <td class="danger nameTable-name">
+      <span class="error glyphicon glyphicon-ban-circle"></span>
+    </td>
+  <% } %>
 <% }) %>

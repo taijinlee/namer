@@ -13,6 +13,8 @@ define([
       this.projects = sharedData.projects;
       this.names = sharedData.names;
       this.tlds = sharedData.tlds;
+
+      this.listenTo(this.names, 'add remove reset', this.renderProject);
     },
 
     render: function(projectId) {

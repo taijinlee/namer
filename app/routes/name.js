@@ -5,6 +5,7 @@ module.exports = function(socket, store) {
   var nameModel = require(process.env.APP_ROOT + '/app/models/name.js')(store);
 
   socket.on('name:create', function(data, callback) {
+    data.id = store.generateId();
     nameModel.insert(data, callback);
   });
 
@@ -22,7 +23,7 @@ module.exports = function(socket, store) {
         });
       },
       names: ['checkIsCollaborator', function(done, results) {
-        nameModel.query({ projectId: projectId }, -1, 0, done);
+        nameModel.query({ projectId: projectId }, {}, done);
       }]
     }, function(error, results) {
       if (error) { return callback(error); }

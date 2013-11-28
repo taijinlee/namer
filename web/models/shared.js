@@ -12,6 +12,7 @@ define([
     cookie : new CookieModel(),
     users: new UsersCollection(),
     projects: new ProjectsCollection(),
+    namesProjectId: null, // the projectId that the names correspond to currently
     names: new NamesCollection(),
     votes: new VotesCollection()
   };
