@@ -26,7 +26,7 @@ case $1 in
     ;;
 
   'test' )
-    NODE_ENV=test APP_ROOT=${APP_ROOT} find test -type f -a -name *.spec.js -exec ./node_modules/mocha/bin/mocha --globals requirejsVars -R list --require should {} \;
+    NODE_ENV=test APP_ROOT=${APP_ROOT} ${APP_ROOT}/node_modules/.bin/mocha --recursive -c -R list
     ;;
 
   'build' )
