@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/taijinlee/namer.png?branch=master)](https://travis-ci.org/taijinlee/namer)
+[![Coverage Status](https://coveralls.io/repos/taijinlee/namer/badge.png)](https://coveralls.io/r/taijinlee/namer)
