@@ -13,8 +13,6 @@ define([
       this.projects = sharedData.projects;
       this.names = sharedData.names;
       this.tlds = sharedData.tlds;
-
-      this.listenTo(this.names, 'add remove reset', this.renderProject);
     },
 
     render: function(projectId) {
@@ -59,12 +57,13 @@ define([
         }]
       }, function(error, results) {
         if (error) { return Backbone.history.navigate('', { trigger: true }); }
-        self.renderProject(projectId);
+        self.renderProject();
+        self.listenTo(self.names, 'add remove reset', self.renderProject);
       });
       return this;
     },
 
-    renderProject: function(projectId) {
+    renderProject: function() {
       this.$el.html(_.template(projectTemplate, { project: this.project }));
 
       var $tbody = this.$('tbody');

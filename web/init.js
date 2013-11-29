@@ -12,6 +12,7 @@ define([
     userId = cookie._namer_token.split(':')[0];
   }
   sharedData.cookie.set({ cookie: cookie, userId: userId });
+  sharedData.user.set({ id: userId });
 
   var socket = sharedData.socket = io.connect();
   socket.socket.on('error', function(reason) {
@@ -27,6 +28,7 @@ define([
 
     // setting userId in cookie obj for convenience
     sharedData.cookie.set({ cookie: cookie, userId: userId });
+    sharedData.user.set({ id: userId })
 
     vent.trigger('after:connect');
   });

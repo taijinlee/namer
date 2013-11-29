@@ -26,6 +26,7 @@ define([
       '': 'home',
       'signup': 'signup',
       'login': 'login',
+      'logout': 'logout',
       'project': 'project',
       'project/:id': 'project',
       '*splat': 'goHome'
@@ -46,6 +47,17 @@ define([
     project: function(id) {
       if (!this.isLoggedIn()) { return Backbone.history.navigate('', { trigger: true }); }
       this.project.setElement(this.$base).render(id);
+    },
+
+    logout: function() {
+      $.removeCookie('_namer_token');
+      sharedData.cookie.clear();
+      sharedData.socket.disconnect()
+
+      sharedData.user.clear();
+      sharedData.user.resetFetched();
+
+      this.goHome();
     },
 
     goHome: function() {

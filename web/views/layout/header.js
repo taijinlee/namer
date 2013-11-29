@@ -3,15 +3,18 @@ define([
   'backbone',
   'models/shared',
   'text!./header.html'
-], function(_, Backbone, sharedModels, headerTemplate) {
+], function(_, Backbone, sharedData, headerTemplate) {
   return Backbone.View.extend({
     initialize: function() {
-      this.user = sharedModels.user;
+      this.user = sharedData.user;
+      this.listenTo(this.user, 'change', this.render);
     },
 
     render: function() {
-      if (sharedModels.cookie.get('userId')) {
+      var userId = this.user.get('id');
+      if (userId) {
         this.user.fetch({
+          data: { id: userId },
           success: _.bind(this.renderUser, this)
         });
         return this;

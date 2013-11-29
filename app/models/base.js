@@ -37,8 +37,8 @@ _.extend(Base.prototype, {
 
   query: function(criteria, options, callback) {
     var _options = {};
-    if (limit) { _options.limit = limit; }
-    if (skip) { _options.skip = skip; }
+    if (options.limit) { _options.limit = limit; }
+    if (options.skip) { _options.skip = skip; }
     return this.store.query(criteria, this.context, _options, callback);
   },
 
