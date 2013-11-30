@@ -83,8 +83,15 @@ define([
 
     addName: function(event) {
       event.preventDefault();
-      // TODO(taijin): fix this hack(?)
+
+      // TODO(taijin): fix this jquery hack(?)
       var newName = this.$addNameForm.find('#newName').val();
+      if (!newName) { return false; }
+
+      var nameExists = this.names.find(function(name) { return name.get('name') === newName; });
+      // TODO(taijinlee): make it so if name exists we message correctly
+      if (nameExists) { return false; }
+
       var availability = _.reduce(this.project.get('tlds'), function(memo, tld) {
         memo[tld] = null; return memo;
       }, {});
