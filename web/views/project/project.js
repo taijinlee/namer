@@ -59,6 +59,7 @@ define([
         if (error) { return Backbone.history.navigate('', { trigger: true }); }
         self.renderProject();
         self.listenTo(self.names, 'add remove reset', self.renderProject);
+        self.listenTo(self.project, 'change', self.renderProject);
       });
       return this;
     },
@@ -74,11 +75,13 @@ define([
       });
 
       this.$addNameForm = this.$('#addName');
+      this.$addTldForm = this.$('#addTld');
       return this;
     },
 
     events: {
-      'submit #addName': 'addName'
+      'submit #addName': 'addName',
+      'submit #addTld': 'addTld'
     },
 
     addName: function(event) {
@@ -105,6 +108,21 @@ define([
       });
       newNameModel.save();
       this.names.add(newNameModel);
+    },
+
+    addTld: function(event) {
+      event.preventDefault();
+
+      // TODO(taijinlee): fix this jquery hack(?)
+      var newTld = this.$addTldForm.find('#newTld').val();
+
+      var currTlds = _.clone(this.project.get('tlds'));
+      // TODO(taijinlee): fix messaging properly
+      if (_.find(currTlds, function(tld) { return tld === newTld; })) { return false; }
+
+      // TODO(taijinlee): add TLD checking
+      currTlds.push(newTld);
+      this.project.save({ tlds: currTlds });
     }
   });
 });

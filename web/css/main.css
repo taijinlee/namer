@@ -4,3 +4,12 @@
 .nameTable-name {
   text-align: center;
 }
+.newName {
+  width: 300px;
+}
+.addName-form {
+  width: 200px;
+}
+.addTld-form {
+  width: 200px;
+}

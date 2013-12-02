@@ -22,12 +22,12 @@ _.extend(Base.prototype, {
   },
 
   update: function(criteria, obj, callback) {
-    if (!this._verifySchema(obj, true)) { return callback(this._schemaInvalidError); }
+    if (!this._verifySchema(obj, false)) { return callback(this._schemaInvalidError); }
     return this.store.update(criteria, this._sanitize(obj), this.context, callback);
   },
 
   upsert: function(criteria, obj, callback) {
-    if (!this._verifySchema(obj, true)) { return callback(this._schemaInvalidError); }
+    if (!this._verifySchema(obj, false)) { return callback(this._schemaInvalidError); }
     return this.store.upsert(criteria, this._sanitize(obj), this.context, callback);
   },
 

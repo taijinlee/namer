@@ -21,4 +21,12 @@ module.exports = function(socket, store) {
       callback(null, results.projects);
     });
   });
+
+  socket.on('project:update', function(data, callback) {
+    // TODO(taijinlee): make sure project is writable by the user
+
+    var projectId = data.id;
+    delete data.id;
+    projectModel.update({ id: projectId }, data, callback);
+  });
 };

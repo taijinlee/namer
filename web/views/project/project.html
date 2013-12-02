@@ -5,13 +5,28 @@
     <thead>
       <tr>
         <th>
-          <form id="addName">
-            <input id="newName" name="newName" type="text" /><button type="submit">Add Name</button>
+          <form id="addName" class="addName-form">
+            <div class="input-group">
+              <input id="newName" name="newName" type="text" class="form-control" placeholder="Add name" />
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-plus-sign"></span></button>
+              </span>
+            </div>
           </form>
         </th>
         <% _.each(project.get('tlds'), function(tld) { %>
           <th class="nameTable-name">.<%= tld %></th>
         <% }) %>
+        <th>
+          <form id="addTld" class="addTld-form">
+            <div class="input-group">
+              <input id="newTld" name="newTld" ype="text" class="form-control" placeholder="Add TLD" />
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-plus-sign"></span></button>
+              </span>
+            </div>
+          </form>
+        </th>
       </tr>
     </thead>
 
