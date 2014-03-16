@@ -34,7 +34,7 @@ module.exports = function(store, req, res) {
         if (!authData || !tokenizer.match(authData.salt, results.body.secret, 0, 0, authData.secret)) {
           return done(new Error('unauthorized: incorrect password'));
         }
-        done(null);
+        return done(null);
       }],
       cookie: ['checkAuth', function(done, results) {
         var userId = results.authData.userId;
@@ -55,7 +55,7 @@ module.exports = function(store, req, res) {
       });
       res.setHeader('Set-Cookie', cookieToken);
       res.statusCode = 200;
-      res.end('ok');
+      return res.end('ok');
     });
     return true;
   }
@@ -65,7 +65,7 @@ module.exports = function(store, req, res) {
       body: async.apply(getBody, req),
       validate: ['body', function(done, results) {
         if (results.body.type !== 'base') { return done(new Error('invalid auth type')); }
-        done(null);
+        return done(null);
       }],
       userId: ['validate', async.apply(function(done) { done(null, store.generateId()); })],
       createUser: ['userId', function(done, results) {
@@ -121,7 +121,7 @@ module.exports = function(store, req, res) {
       });
       res.setHeader('Set-Cookie', cookieToken);
       res.statusCode = 200;
-      res.end('ok');
+      return res.end('ok');
     });
     return true;
   }

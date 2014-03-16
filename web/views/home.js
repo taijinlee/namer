@@ -1,14 +1,16 @@
+/** @jsx React.DOM */
 define([
-  'backbone'
-], function(Backbone) {
+  'react',
+  'jsx!/views/layout/layout'
+], function(React, Layout) {
 
-  return Backbone.View.extend({
-
+  return React.createClass({
     render: function() {
-      this.$el.html('hihi');
+      return this.transferPropsTo(
+        <Layout>
+          <div>hihi</div>
+        </Layout>
+      );
     }
-
   });
-
-
 });

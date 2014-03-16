@@ -1,21 +1,20 @@
+/** @jsx React.DOM */
 define([
-  'underscore',
-  'backbone',
-  './header',
-  './footer',
-  'text!./layout.html'
-], function(_, Backbone, HeaderView, FooterView, layoutTemplate) {
-  return Backbone.View.extend({
-    initialize: function() {
-      this.header = new HeaderView();
-      this.footer = new FooterView();
-    },
-
+  'react',
+  'jsx!./header',
+  'jsx!./footer'
+], function(React, Header, Footer) {
+  return React.createClass({
     render: function() {
-      this.$el.html(_.template(layoutTemplate));
-      this.header.setElement(this.$('#pageHeader')).render();
-      this.footer.setElement(this.$('#pageFooter')).render();
-      return this;
+      return this.transferPropsTo(
+        <div>
+          <Header isLoggedIn={this.props.cookie.get('userId')} email={this.props.user.get('email')} />
+          <section className="container">
+            {this.props.children}
+          </section>
+          <Footer />
+        </div>
+      );
     }
   });
 });

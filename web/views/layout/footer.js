@@ -1,13 +1,14 @@
+/** @jsx React.DOM */
 define([
-  'backbone'
-], function(Backbone) {
-  return Backbone.View.extend({
-    initailize: function() {
-
-    },
-
+  'react'
+], function(React) {
+  return React.createClass({
     render: function() {
-      return this;
+      return (
+        <footer>
+          yay footer!
+        </footer>
+      );
     }
   });
 });

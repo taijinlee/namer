@@ -4,9 +4,9 @@ define([
   'bootstrap',
   'jquery',
   'jquery-cookie',
+  'react',
   'select2',
   'socketio',
-  'text',
   'underscore'
 ], function() {
   var $ = window.$.noConflict();
